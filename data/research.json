@@ -1,0 +1,22 @@
+[
+  {
+    "topic": "Machine Learning",
+    "description": "Learning the mathematical and computational foundations behind intelligent systems."
+  },
+  {
+    "topic": "Deep Learning",
+    "description": "Working toward a first-principles understanding of neural networks and training."
+  },
+  {
+    "topic": "Transformers & LLMs",
+    "description": "Studying attention, inference, model architectures, quantization, and modern language models."
+  },
+  {
+    "topic": "Agentic AI",
+    "description": "Exploring systems that reason, use tools, take actions, and verify outcomes."
+  },
+  {
+    "topic": "On-Device AI",
+    "description": "Exploring multimodal models, efficient inference, and edge intelligence."
+  }
+]

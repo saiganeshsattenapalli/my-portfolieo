@@ -1,145 +1,223 @@
 /* ═══════════════════════════════════════════
-   Portfolio JS — Vanilla
-   Scroll reveal, mobile nav, active section
+   Curiora JS — Vanilla, Zero Dependencies
+   Pointer interactions, lerp animation, scroll
    ═══════════════════════════════════════════ */
 
 (function () {
     'use strict';
 
-    /* ─── Scroll Reveal via IntersectionObserver ─── */
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Linear Interpolation helper
+    const lerp = (start, end, factor) => start + (end - start) * factor;
+
+    /* ─── Pointer Interactions (Ambient, Tilt, Magnetic) ─── */
+    function initPointerEffects() {
+        if (prefersReducedMotion) return;
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+
+        // Track global mouse
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        // Ambient Canvas State
+        let ambientX = mouseX;
+        let ambientY = mouseY;
+        const root = document.documentElement;
+
+        // Glass Tilt State
+        const glassElements = document.querySelectorAll('[data-depth]');
+        const glassData = Array.from(glassElements).map(el => ({
+            el,
+            depth: parseFloat(el.getAttribute('data-depth')) || 10,
+            curTiltX: 0,
+            curTiltY: 0,
+            targetTiltX: 0,
+            targetTiltY: 0
+        }));
+
+        // Magnetic Buttons State
+        const buttons = document.querySelectorAll('.btn');
+        const btnData = Array.from(buttons).map(el => ({
+            el,
+            curMagX: 0,
+            curMagY: 0,
+            targetMagX: 0,
+            targetMagY: 0
+        }));
+
+        // Render Loop
+        function render() {
+            // 1. Ambient Light
+            ambientX = lerp(ambientX, mouseX, 0.05);
+            ambientY = lerp(ambientY, mouseY, 0.05);
+            root.style.setProperty('--mouse-x', `${ambientX}px`);
+            root.style.setProperty('--mouse-y', `${ambientY}px`);
+
+            // 2. Glass Tilt
+            glassData.forEach(data => {
+                const rect = data.el.getBoundingClientRect();
+                
+                // Only calculate if in viewport
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    const elCenterX = rect.left + rect.width / 2;
+                    const elCenterY = rect.top + rect.height / 2;
+                    
+                    // Normalize cursor position from -1 to 1 relative to element center
+                    const normX = (mouseX - elCenterX) / (window.innerWidth / 2);
+                    const normY = (mouseY - elCenterY) / (window.innerHeight / 2);
+
+                    data.targetTiltY = normX * data.depth;       // Mouse X controls Rotate Y
+                    data.targetTiltX = -(normY * data.depth);    // Mouse Y controls Rotate X
+                } else {
+                    data.targetTiltX = 0;
+                    data.targetTiltY = 0;
+                }
+
+                data.curTiltX = lerp(data.curTiltX, data.targetTiltX, 0.05);
+                data.curTiltY = lerp(data.curTiltY, data.targetTiltY, 0.05);
+
+                data.el.style.setProperty('--tilt-x', `${data.curTiltY}deg`);
+                data.el.style.setProperty('--tilt-y', `${data.curTiltX}deg`);
+            });
+
+            // 3. Magnetic Buttons
+            btnData.forEach(data => {
+                const rect = data.el.getBoundingClientRect();
+                const elCenterX = rect.left + rect.width / 2;
+                const elCenterY = rect.top + rect.height / 2;
+                
+                // Calculate distance
+                const distX = mouseX - elCenterX;
+                const distY = mouseY - elCenterY;
+                const distance = Math.sqrt(distX * distX + distY * distY);
+                
+                // Magnet radius ~ 100px
+                if (distance < 100) {
+                    data.targetMagX = distX * 0.3;
+                    data.targetMagY = distY * 0.3;
+                } else {
+                    data.targetMagX = 0;
+                    data.targetMagY = 0;
+                }
+
+                data.curMagX = lerp(data.curMagX, data.targetMagX, 0.1);
+                data.curMagY = lerp(data.curMagY, data.targetMagY, 0.1);
+
+                data.el.style.setProperty('--mag-x', `${data.curMagX}px`);
+                data.el.style.setProperty('--mag-y', `${data.curMagY}px`);
+            });
+
+            requestAnimationFrame(render);
+        }
+
+        render();
+    }
+
+    /* ─── Scroll Reveal ─── */
     function initScrollReveal() {
-        var elements = document.querySelectorAll('[data-animate]');
+        const elements = document.querySelectorAll('[data-animate]');
         if (!elements.length) return;
 
-        // Trigger hero elements immediately (they're above the fold)
-        var heroEls = document.querySelectorAll('.hero [data-animate]');
-        heroEls.forEach(function (el) {
-            // Small delay so the CSS transition-delay stagger works
-            requestAnimationFrame(function () {
-                el.classList.add('visible');
-            });
+        // Hero immediate reveal
+        const heroEls = document.querySelectorAll('.hero [data-animate]');
+        heroEls.forEach(el => {
+            requestAnimationFrame(() => el.classList.add('visible'));
         });
 
-        var observer = new IntersectionObserver(
-            function (entries) {
-                entries.forEach(function (entry) {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('visible');
-                        observer.unobserve(entry.target);
-                    }
+        if (prefersReducedMotion) {
+            elements.forEach(el => el.classList.add('visible'));
+            return;
+        }
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        elements.forEach(el => {
+            if (!el.closest('.hero')) observer.observe(el);
+        });
+    }
+
+    /* ─── Navigation ─── */
+    function initNav() {
+        // Mobile Toggle
+        const toggle = document.getElementById('nav-toggle');
+        const links = document.getElementById('nav-links');
+        
+        if (toggle && links) {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('open');
+                links.classList.toggle('open');
+                document.body.style.overflow = links.classList.contains('open') ? 'hidden' : '';
+            });
+
+            const navAnchors = links.querySelectorAll('a');
+            navAnchors.forEach(a => {
+                a.addEventListener('click', () => {
+                    toggle.classList.remove('open');
+                    links.classList.remove('open');
+                    document.body.style.overflow = '';
                 });
-            },
-            { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-        );
-
-        elements.forEach(function (el) {
-            // Skip hero elements — already handled above
-            if (!el.closest('.hero')) {
-                observer.observe(el);
-            }
-        });
-    }
-
-    /* ─── Mobile Navigation ─── */
-    function initMobileNav() {
-        var toggle = document.getElementById('nav-toggle');
-        var links = document.getElementById('nav-links');
-        if (!toggle || !links) return;
-
-        toggle.addEventListener('click', function () {
-            toggle.classList.toggle('open');
-            links.classList.toggle('open');
-            document.body.style.overflow = links.classList.contains('open') ? 'hidden' : '';
-        });
-
-        // Close on link click
-        var navAnchors = links.querySelectorAll('a');
-        navAnchors.forEach(function (a) {
-            a.addEventListener('click', function () {
-                toggle.classList.remove('open');
-                links.classList.remove('open');
-                document.body.style.overflow = '';
             });
-        });
-    }
+        }
 
-    /* ─── Active Nav Link on Scroll ─── */
-    function initActiveNav() {
-        var sections = document.querySelectorAll('section[id]');
-        var navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
-        if (!sections.length || !navLinks.length) return;
+        // Nav Pill Scrolled State
+        const navPill = document.querySelector('.nav-pill');
+        if (navPill) {
+            const checkScroll = () => {
+                if (window.scrollY > 20) navPill.classList.add('scrolled');
+                else navPill.classList.remove('scrolled');
+            };
+            window.addEventListener('scroll', checkScroll, { passive: true });
+            checkScroll();
+        }
 
-        var observer = new IntersectionObserver(
-            function (entries) {
-                entries.forEach(function (entry) {
+        // Active Link tracking
+        const sections = document.querySelectorAll('.chapter[id]');
+        const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+        
+        if (sections.length && navAnchors.length) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
                     if (entry.isIntersecting) {
-                        var id = entry.target.getAttribute('id');
-                        navLinks.forEach(function (link) {
-                            link.classList.remove('active');
-                            if (link.getAttribute('href') === '#' + id) {
-                                link.classList.add('active');
-                            }
+                        const id = entry.target.getAttribute('id');
+                        navAnchors.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
                         });
                     }
                 });
-            },
-            { threshold: 0.2, rootMargin: '-80px 0px -50% 0px' }
-        );
+            }, { threshold: 0.2, rootMargin: '-10% 0px -60% 0px' });
 
-        sections.forEach(function (section) {
-            observer.observe(section);
-        });
-    }
-
-    /* ─── Nav Background on Scroll ─── */
-    function initNavScroll() {
-        var nav = document.getElementById('site-nav');
-        if (!nav) return;
-
-        var scrolled = false;
-
-        function checkScroll() {
-            var shouldBeScrolled = window.scrollY > 20;
-            if (shouldBeScrolled !== scrolled) {
-                scrolled = shouldBeScrolled;
-                if (scrolled) {
-                    nav.classList.add('scrolled');
-                } else {
-                    nav.classList.remove('scrolled');
-                }
-            }
+            sections.forEach(sec => observer.observe(sec));
         }
 
-        window.addEventListener('scroll', checkScroll, { passive: true });
-        checkScroll();
-    }
-
-    /* ─── Smooth Scroll with Nav Offset ─── */
-    function initSmoothScroll() {
-        var anchors = document.querySelectorAll('a[href^="#"]');
-        anchors.forEach(function (anchor) {
+        // Smooth Scroll Offset
+        navAnchors.forEach(anchor => {
             anchor.addEventListener('click', function (e) {
-                var href = this.getAttribute('href');
-                if (href === '#') return;
-
-                var target = document.querySelector(href);
-                if (!target) return;
-
-                e.preventDefault();
-                var navHeight = document.getElementById('site-nav').offsetHeight;
-                var top = target.getBoundingClientRect().top + window.pageYOffset - navHeight - 20;
-
-                window.scrollTo({ top: top, behavior: 'smooth' });
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    const top = target.getBoundingClientRect().top + window.pageYOffset - 100;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                }
             });
         });
     }
 
     /* ─── Init ─── */
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', () => {
+        initPointerEffects();
         initScrollReveal();
-        initMobileNav();
-        initActiveNav();
-        initNavScroll();
-        initSmoothScroll();
+        initNav();
     });
 })();

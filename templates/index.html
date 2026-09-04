@@ -14,144 +14,140 @@
 
 <body>
 
+    <!-- Ambient light canvas -->
+    <div id="ambient-canvas" aria-hidden="true"></div>
+
     <!-- ─── Navigation ─── -->
-    <header class="nav" id="site-nav">
-        <a class="brand" href="/">SG.</a>
-        <nav class="nav-links" id="nav-links">
-            <a href="#work">Work</a>
-            <a href="#research">Research</a>
-            <a href="#about">About</a>
-            <a href="#journey">Journey</a>
+    <header class="nav-wrapper">
+        <nav class="nav-pill" id="site-nav">
+            <a class="brand" href="/">SG.</a>
+            <div class="nav-links" id="nav-links">
+                <a href="#origin">About</a>
+                <a href="#curio">Curio</a>
+                <a href="#ecosystem">Ecosystem</a>
+                <a href="#research">Research</a>
+                <a href="#journey">Journey</a>
+            </div>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+            </button>
         </nav>
-        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
-            <span></span>
-            <span></span>
-        </button>
     </header>
 
     <main>
 
-        <!-- ─── Hero ─── -->
-        <section class="hero">
-            <div class="hero-content">
+        <!-- ═══ Chapter: Hero ═══ -->
+        <section class="chapter hero" id="hero">
+            <div class="container">
                 <p class="eyebrow" data-animate>AI / ML · BACKEND · BUILDING</p>
-                <h1 data-animate>I build to understand<br><span class="hero-accent">intelligence.</span></h1>
-                <p class="hero-copy" data-animate>I'm Saiganesh — an aspiring AI research engineer exploring machine learning from first principles and building intelligent systems along the way.</p>
-                <div class="actions" data-animate>
-                    <a class="button primary" href="#work">Explore my work</a>
-                    <a class="button secondary" href="https://github.com/saiganeshsattenapalli" target="_blank" rel="noreferrer">GitHub ↗</a>
+                <h1 data-animate>I build to understand<br><span class="accent">intelligence.</span></h1>
+                <p class="hero-sub" data-animate>I'm Saiganesh — an aspiring AI research engineer exploring machine learning from first principles and building intelligent systems along the way.</p>
+                <div class="hero-actions" data-animate>
+                    <a class="btn btn-primary" href="#curio">Explore Curio</a>
+                    <a class="btn btn-glass" href="https://github.com/saiganeshsattenapalli" target="_blank" rel="noreferrer">GitHub ↗</a>
                 </div>
             </div>
         </section>
 
-        <!-- ─── Projects ─── -->
-        <section id="work" class="section">
-            <div class="section-heading" data-animate>
-                <span class="section-number">01</span>
-                <h2>Building</h2>
-            </div>
-
-            <!-- Featured project: Curio -->
-            {% for project in projects %}
-            {% if project.featured %}
-            <article class="project-featured" data-animate>
-                <div class="project-featured-inner">
-                    <div class="project-meta">
-                        <span class="project-label">{{ project.subtitle }}</span>
-                        <span class="project-status">{{ project.status }}</span>
-                    </div>
-                    <h3>{{ project.name }}</h3>
-                    <p>{{ project.description }}</p>
-                    <div class="tags">{% for tag in project.tags %}<span>{{ tag }}</span>{% endfor %}</div>
-                </div>
-            </article>
-            {% endif %}
-            {% endfor %}
-
-            <!-- Other projects -->
-            <div class="project-grid">
-                {% for project in projects %}
-                {% if not project.featured %}
-                <article class="project-card" data-animate>
-                    <div class="project-meta">
-                        <span class="project-label">{{ project.subtitle }}</span>
-                        <span class="project-status">{{ project.status }}</span>
-                    </div>
-                    <h3>{{ project.name }}</h3>
-                    <p>{{ project.description }}</p>
-                    <div class="tags">{% for tag in project.tags %}<span>{{ tag }}</span>{% endfor %}</div>
-                </article>
-                {% endif %}
-                {% endfor %}
-            </div>
-        </section>
-
-        <!-- ─── Research ─── -->
-        <section id="research" class="section">
-            <div class="section-heading" data-animate>
-                <span class="section-number">02</span>
-                <h2>Research Direction</h2>
-            </div>
-            <div class="research-list">
-                {% for topic, description in research %}
-                <article class="research-row" data-animate>
-                    <span class="research-index">0{{ loop.index }}</span>
-                    <h3>{{ topic }}</h3>
-                    <p>{{ description }}</p>
-                </article>
-                {% endfor %}
-            </div>
-        </section>
-
-        <!-- ─── About ─── -->
-        <section id="about" class="section">
-            <div class="section-heading" data-animate>
-                <span class="section-number">03</span>
-                <h2>About</h2>
-            </div>
-            <div class="about-content" data-animate>
-                <p class="statement">I don't want to only use AI.<br>I want to understand how it works.</p>
-                <div class="about-body">
+        <!-- ═══ Chapter: Origin ═══ -->
+        <section class="chapter origin" id="origin">
+            <div class="container">
+                <div class="chapter-label" data-animate><span>01</span> Origin</div>
+                <blockquote class="statement" data-animate>
+                    I don't want to only use AI.<br>I want to understand how it works.
+                </blockquote>
+                <div class="origin-body" data-animate>
                     <p>My path is moving from software fundamentals and backend engineering toward machine learning, deep learning, transformers, multimodal models, and agentic systems.</p>
                     <p>My first product direction is <strong>Curio</strong>, built under <strong>Curiora</strong> — an ecosystem for intelligence, research, and building.</p>
                 </div>
             </div>
         </section>
 
-        <!-- ─── Journey ─── -->
-        <section id="journey" class="section">
-            <div class="section-heading" data-animate>
-                <span class="section-number">04</span>
-                <h2>Journey</h2>
+        <!-- ═══ Chapter: Curio (Featured) ═══ -->
+        {% for project in projects %}
+        {% if project.featured %}
+        <section class="chapter curio-feature" id="curio">
+            <div class="container">
+                <div class="chapter-label" data-animate><span>02</span> Flagship</div>
+                <div class="curio-surface glass-surface" data-depth="12">
+                    <div class="curio-inner">
+                        <div class="curio-meta">
+                            <span class="curio-essence">{{ project.essence }}</span>
+                            <span class="curio-status">{{ project.status }}</span>
+                        </div>
+                        <h2 class="curio-title" data-animate>{{ project.name }}</h2>
+                        <p class="curio-subtitle" data-animate>{{ project.subtitle }}</p>
+                        <p class="curio-desc" data-animate>{{ project.description }}</p>
+                        <div class="curio-tags" data-animate>
+                            {% for tag in project.tags %}<span>{{ tag }}</span>{% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="journey-steps" data-animate>
-                <div class="journey-step">
-                    <span class="journey-marker"></span>
-                    <span class="journey-label">Python</span>
+        </section>
+        {% endif %}
+        {% endfor %}
+
+        <!-- ═══ Chapter: Ecosystem ═══ -->
+        <section class="chapter ecosystem" id="ecosystem">
+            <div class="container">
+                <div class="chapter-label" data-animate><span>03</span> The Curiora Ecosystem</div>
+                <p class="ecosystem-intro" data-animate>Each project explores a different dimension of intelligent systems.</p>
+                <div class="eco-grid">
+                    {% for project in projects %}
+                    {% if not project.featured %}
+                    <article class="eco-card glass-surface" data-depth="6" data-animate>
+                        <div class="eco-essence">{{ project.essence }}</div>
+                        <h3>{{ project.name }}</h3>
+                        <p>{{ project.description }}</p>
+                        <div class="eco-footer">
+                            <span class="eco-status">{{ project.status }}</span>
+                            <div class="eco-tags">
+                                {% for tag in project.tags %}<span>{{ tag }}</span>{% endfor %}
+                            </div>
+                        </div>
+                    </article>
+                    {% endif %}
+                    {% endfor %}
                 </div>
-                <div class="journey-step">
-                    <span class="journey-marker"></span>
-                    <span class="journey-label">Backend</span>
+            </div>
+        </section>
+
+        <!-- ═══ Chapter: Research ═══ -->
+        <section class="chapter" id="research">
+            <div class="container">
+                <div class="chapter-label" data-animate><span>04</span> Research Direction</div>
+                <div class="research-list">
+                    {% for item in research %}
+                    <article class="research-row" data-animate>
+                        <span class="research-idx">0{{ loop.index }}</span>
+                        <h3>{{ item.topic }}</h3>
+                        <p>{{ item.description }}</p>
+                    </article>
+                    {% endfor %}
                 </div>
-                <div class="journey-step">
-                    <span class="journey-marker"></span>
-                    <span class="journey-label">ML</span>
-                </div>
-                <div class="journey-step">
-                    <span class="journey-marker"></span>
-                    <span class="journey-label">Deep Learning</span>
-                </div>
-                <div class="journey-step">
-                    <span class="journey-marker"></span>
-                    <span class="journey-label">Transformers</span>
-                </div>
-                <div class="journey-step">
-                    <span class="journey-marker"></span>
-                    <span class="journey-label">Agentic AI</span>
-                </div>
-                <div class="journey-step">
-                    <span class="journey-marker"></span>
-                    <span class="journey-label">AI Research</span>
+            </div>
+        </section>
+
+        <!-- ═══ Chapter: Journey ═══ -->
+        <section class="chapter" id="journey">
+            <div class="container">
+                <div class="chapter-label" data-animate><span>05</span> Journey</div>
+                <div class="journey-track" data-animate>
+                    <div class="journey-node"><span>Python</span></div>
+                    <div class="journey-line"></div>
+                    <div class="journey-node"><span>Backend</span></div>
+                    <div class="journey-line"></div>
+                    <div class="journey-node"><span>ML</span></div>
+                    <div class="journey-line"></div>
+                    <div class="journey-node"><span>Deep Learning</span></div>
+                    <div class="journey-line"></div>
+                    <div class="journey-node"><span>Transformers</span></div>
+                    <div class="journey-line"></div>
+                    <div class="journey-node"><span>Agentic AI</span></div>
+                    <div class="journey-line"></div>
+                    <div class="journey-node current"><span>AI Research</span></div>
                 </div>
             </div>
         </section>
@@ -160,7 +156,7 @@
 
     <!-- ─── Footer ─── -->
     <footer>
-        <div class="footer-inner">
+        <div class="container footer-inner">
             <div class="footer-info">
                 <strong>Saiganesh Sattenapalli</strong>
                 <span>Building toward AI research engineering.</span>

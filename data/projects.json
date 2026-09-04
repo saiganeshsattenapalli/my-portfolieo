@@ -1,0 +1,47 @@
+[
+  {
+    "name": "Curio",
+    "subtitle": "Curiora Intelligence",
+    "description": "A model-agnostic agentic intelligence system designed around perception, reasoning, action, and verification. Curio is the flagship product of the Curiora ecosystem.",
+    "essence": "Intelligence",
+    "tags": ["AI", "Agents", "LLMs", "FastAPI"],
+    "status": "Building",
+    "featured": true
+  },
+  {
+    "name": "Curiora Pay",
+    "subtitle": "Fintech",
+    "description": "An experimental fintech project exploring intelligent payment systems, backend architecture, and data-driven financial workflows.",
+    "essence": "Systems",
+    "tags": ["Python", "FastAPI", "SQL", "Fintech"],
+    "status": "Exploring",
+    "featured": false
+  },
+  {
+    "name": "Curiora Campus",
+    "subtitle": "Campus Ecosystem",
+    "description": "A campus-focused intelligent ecosystem connecting students, resources, and opportunities through thoughtful infrastructure.",
+    "essence": "People",
+    "tags": ["Full-Stack", "FastAPI", "Community"],
+    "status": "Designing",
+    "featured": false
+  },
+  {
+    "name": "Curiora Research",
+    "subtitle": "AI Research",
+    "description": "Ongoing experiments and explorations in machine learning, deep learning, and neural network architectures.",
+    "essence": "Understanding",
+    "tags": ["ML", "Deep Learning", "Research"],
+    "status": "Ongoing",
+    "featured": false
+  },
+  {
+    "name": "Curiora Intelligence Lab",
+    "subtitle": "Research Initiative",
+    "description": "A focused initiative for building and studying intelligent systems from first principles.",
+    "essence": "Exploration",
+    "tags": ["AI", "Research", "Systems"],
+    "status": "Forming",
+    "featured": false
+  }
+]
