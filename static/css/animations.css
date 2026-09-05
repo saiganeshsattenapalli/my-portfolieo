@@ -1,0 +1,82 @@
+/* 
+  Curiora Animations
+  Reveal, gentle breathing layers
+*/
+
+/* --- Scroll Reveal --- */
+.reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s var(--ease-standard), transform 0.8s var(--ease-standard);
+    will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* --- Atmospheric Motion --- */
+.atmosphere {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+    background-color: var(--color-background);
+}
+
+.atmosphere-layer {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.4;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+.layer-1 {
+    top: -10%;
+    left: -10%;
+    width: 60vw;
+    height: 60vw;
+    background: radial-gradient(circle, rgba(0, 113, 227, 0.05) 0%, rgba(255,255,255,0) 70%);
+    animation-name: breathe-1;
+    animation-duration: 22s;
+}
+
+.layer-2 {
+    bottom: -20%;
+    right: -10%;
+    width: 70vw;
+    height: 70vw;
+    background: radial-gradient(circle, rgba(0, 113, 227, 0.03) 0%, rgba(255,255,255,0) 70%);
+    animation-name: breathe-2;
+    animation-duration: 28s;
+}
+
+@keyframes breathe-1 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(5%, 5%) scale(1.1); }
+}
+
+@keyframes breathe-2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-5%, -5%) scale(1.15); }
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+    .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    .atmosphere-layer {
+        animation: none;
+    }
+}
