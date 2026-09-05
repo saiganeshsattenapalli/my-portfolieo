@@ -19,24 +19,24 @@
 .nav-container {
     pointer-events: auto;
     width: 100%;
-    max-width: var(--max-width);
-    height: 54px;
+    max-width: var(--max-width); /* 1120px */
+    height: 52px;
     border-radius: var(--radius-pill);
     background: var(--glass-bg);
     backdrop-filter: var(--glass-filter);
     -webkit-backdrop-filter: var(--glass-filter);
     border: 1px solid var(--glass-border);
-    box-shadow: var(--shadow-soft), inset 0 1px 0 var(--glass-highlight);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.04), inset 0 1px 0 var(--glass-highlight);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 20px;
+    padding: 0 16px;
     transition: box-shadow var(--transition), background var(--transition);
 }
 
 .site-nav.is-scrolled .nav-container {
     background: rgba(255, 255, 255, 0.85);
-    box-shadow: var(--shadow-blue), inset 0 1px 0 var(--glass-highlight);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08), inset 0 1px 0 var(--glass-highlight);
 }
 
 .nav-brand {
@@ -67,6 +67,7 @@
     font-size: 14px;
     font-weight: 500;
     color: var(--color-text-secondary);
+    transition: color var(--transition);
 }
 
 .nav-links a:hover,
@@ -74,22 +75,24 @@
     color: var(--color-text);
 }
 
+/* --- Curio CTA --- */
 .nav-cta {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 32px;
+    height: 34px;
     padding: 0 16px;
-    background: var(--color-text);
+    background: var(--color-accent);
     color: #ffffff;
     font-size: 13px;
     font-weight: 600;
     border-radius: var(--radius-pill);
-    transition: background var(--transition);
+    transition: background var(--transition), transform var(--transition);
 }
 
 .nav-cta:hover {
-    background: var(--color-accent);
+    background: var(--color-accent-hover);
+    transform: scale(1.02);
 }
 
 .nav-hamburger {
