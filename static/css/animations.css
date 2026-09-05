@@ -17,6 +17,7 @@
 }
 
 /* --- Atmospheric Motion --- */
+/* The background remains mostly white. */
 .atmosphere {
     position: fixed;
     top: 0;
@@ -29,44 +30,48 @@
     background-color: var(--color-background);
 }
 
+/* 
+  Subtle pale-blue fields behind the page.
+  Positioned near the top to provide refraction material for the navbar glass.
+*/
 .atmosphere-layer {
     position: absolute;
     border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.35;
+    filter: blur(140px);
+    opacity: 0.25;
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
     animation-direction: alternate;
 }
 
 .layer-1 {
-    top: -15%;
-    left: -15%;
-    width: 60vw;
-    height: 60vw;
-    background: radial-gradient(circle, rgba(0, 113, 227, 0.04) 0%, rgba(255,255,255,0) 70%);
+    top: -20vh;
+    left: 10vw;
+    width: 80vw;
+    height: 80vw;
+    background: radial-gradient(circle, rgba(0, 113, 227, 0.05) 0%, rgba(255,255,255,0) 70%);
     animation-name: breathe-1;
-    animation-duration: 18s;
+    animation-duration: 22s;
 }
 
 .layer-2 {
-    bottom: -15%;
-    right: -10%;
-    width: 75vw;
-    height: 75vw;
+    top: -10vh;
+    right: -20vw;
+    width: 100vw;
+    height: 100vw;
     background: radial-gradient(circle, rgba(0, 113, 227, 0.03) 0%, rgba(255,255,255,0) 70%);
     animation-name: breathe-2;
-    animation-duration: 25s;
+    animation-duration: 28s;
 }
 
 @keyframes breathe-1 {
     0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(3%, 4%) scale(1.05); }
+    100% { transform: translate(3%, 3%) scale(1.05); }
 }
 
 @keyframes breathe-2 {
     0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(-4%, -3%) scale(1.08); }
+    100% { transform: translate(-3%, -2%) scale(1.08); }
 }
 
 /* Reduced Motion Override */

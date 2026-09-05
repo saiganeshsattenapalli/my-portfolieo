@@ -7,13 +7,7 @@ from fastapi.templating import Jinja2Templates
 
 BASE_DIR = Path(__file__).resolve().parent
 
-app = FastAPI(
-    title="Curiora Portfolio",
-    docs_url=None,
-    redoc_url=None,
-    openapi_external_docs=None,
-    openapi_url=None,
-)
+app = FastAPI(title="Curiora Portfolio",docs_url=None,redoc_url=None,openapi_external_docs=None,openapi_url=None)
 
 app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
@@ -26,11 +20,7 @@ def load_json(filename: str):
 async def home(request: Request):
     projects = load_json("projects.json")
     research = load_json("research.json")
-    return templates.TemplateResponse(
-        request, 
-        "index.html", 
-        {"projects": projects, "research": research}
-    )
+    return templates.TemplateResponse(request, "index.html", {"projects": projects, "research": research})
 
 @app.get("/projects")
 async def get_projects():

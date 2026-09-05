@@ -26,7 +26,8 @@
     backdrop-filter: var(--glass-filter);
     -webkit-backdrop-filter: var(--glass-filter);
     border: 1px solid var(--glass-border);
-    box-shadow: 0 8px 30px rgba(0,0,0,0.04), inset 0 1px 0 var(--glass-highlight);
+    /* Soft shadow with precise inner highlight */
+    box-shadow: var(--shadow-soft), inset 0 1px 0 var(--glass-highlight);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -36,13 +37,15 @@
 
 .site-nav.is-scrolled .nav-container {
     background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.08), inset 0 1px 0 var(--glass-highlight);
+    box-shadow: 0 12px 35px rgba(0,0,0,0.06), inset 0 1px 0 var(--glass-highlight);
 }
 
+/* Nav Brand */
 .nav-brand {
     display: flex;
     align-items: baseline;
     gap: 8px;
+    padding-left: 8px; /* Visual balance */
 }
 
 .nav-brand strong {
@@ -57,6 +60,7 @@
     color: var(--color-text-secondary);
 }
 
+/* Nav Links */
 .nav-links {
     display: flex;
     align-items: center;
@@ -75,7 +79,7 @@
     color: var(--color-text);
 }
 
-/* --- Curio CTA --- */
+/* Nav CTA - Priority #2 */
 .nav-cta {
     display: inline-flex;
     align-items: center;
@@ -87,14 +91,14 @@
     font-size: 13px;
     font-weight: 600;
     border-radius: var(--radius-pill);
-    transition: background var(--transition), transform var(--transition);
+    transition: background var(--transition);
 }
 
 .nav-cta:hover {
     background: var(--color-accent-hover);
-    transform: scale(1.02);
 }
 
+/* Mobile Nav Toggle */
 .nav-hamburger {
     display: none;
     flex-direction: column;
@@ -128,13 +132,12 @@
 }
 
 .button-primary {
-    background: var(--color-accent);
+    background: var(--color-text);
     color: #ffffff;
 }
 
 .button-primary:hover {
-    background: var(--color-accent-hover);
-    transform: scale(1.02);
+    background: var(--color-accent);
 }
 
 .button-secondary {
@@ -153,7 +156,7 @@
     backdrop-filter: var(--glass-filter);
     -webkit-backdrop-filter: var(--glass-filter);
     border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow-blue); /* Subtle blue depth for Curio */
 }
 
 /* --- Tags & Badges --- */
